@@ -80,6 +80,14 @@
                 @endif
             </div>
             <div>
+                <label for="captcha">Captcha</label>
+                <input type="text" name="captcha" required>
+                @if ($errors->has('captcha'))
+                    <div class="error">{{ $errors->first('captcha') }}</div>
+                @endif
+            </div>
+            <img src="{{ captcha_src() }}" alt="CAPTCHA">
+            <div>
                 <button type="submit">Login</button>
             </div>
         </form>

@@ -19,18 +19,20 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password', 'captcha');
+        $credentials2 = $request->only('email', 'password');
 
         $validator = Validator::make($credentials, [
             'email' => 'required|email',
             'password' => 'required|min:10|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$/',
+            'captcha' => 'required|captcha',
         ]);
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials2)) {
             // Login successful
             // Reset login attempts and last login attempt
             Auth::user()->update([
